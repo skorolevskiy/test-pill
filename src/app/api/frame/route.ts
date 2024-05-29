@@ -119,10 +119,10 @@ function getResponse(type: ResponseType) {
 		[ResponseType.RECAST]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/recast.png',
 		[ResponseType.NO_ADDRESS]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/no-address.png',
 		[ResponseType.ERROR]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/error.png',
-		[ResponseType.NEED_TOKEN]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/error.png',
+		[ResponseType.NEED_TOKEN]: 'https://gateway.lighthouse.storage/ipfs/QmWzjYyDRau3u9QZ3JzzARKeQ3cvZJv3UetmrMiuCNw2CG',
 	}[type];
 	const shouldRetry =
-		type === ResponseType.ERROR || type === ResponseType.RECAST;
+		type === ResponseType.ERROR || type === ResponseType.RECAST || type === ResponseType.NEED_TOKEN;
 	// const successRetry = 
 	//   type === ResponseType.SUCCESS;
 	return new NextResponse(`<!DOCTYPE html><html><head>
