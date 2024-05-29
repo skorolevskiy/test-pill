@@ -56,7 +56,7 @@ export async function addUser(fid: string | null, username: string | null, displ
 			username: username ? username : null,
 			name: display_name ? display_name : null,
 			points: 0,
-			dailySpins: power_badge ? 3 : 6,
+			dailySpins: power_badge ? 6 : 3,
 			lastSpin: new Date().toLocaleString(),
 			refFid: ref_fid
 		})
@@ -88,7 +88,7 @@ export async function updateDate(fid: string | null, power_badge: boolean | null
 	await db
 		.updateTable('spiners')
 		.set((eb) => ({
-			dailySpins: power_badge ? 3 : 6,
+			dailySpins: power_badge ? 6 : 3,
 			lastSpin: new Date().toLocaleString(),
 		}))
 		.where('fid', '=', fid)
