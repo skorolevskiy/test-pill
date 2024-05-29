@@ -50,8 +50,8 @@ export async function POST(req: NextRequest): Promise<Response> {
 			functionName: 'balanceOf',
 			args: [address],
 		  });
-	  
-		  if (balance < 24000000000000000000n) {
+
+		  if (balance < 24000000000000000000000n) {
 			return getResponse(ResponseType.NEED_TOKEN);
 		  } else {
 			console.warn(balance);
