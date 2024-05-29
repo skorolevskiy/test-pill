@@ -1,17 +1,25 @@
-import { SITE_URL, NEYNAR_API_KEY } from '@/config';
+import { abi } from '@/abi/ERC20';
+import { SITE_URL, NEYNAR_API_KEY, CHAIN, CONTRACT_ADDRESS } from '@/config';
 //import { kv } from '@vercel/kv';
 import { NextRequest, NextResponse } from 'next/server';
 import {
 	Address,
 	Hex,
 	TransactionExecutionError,
+	createPublicClient,
+	createWalletClient,
 	http,
 } from 'viem';
 
 let fid: string, points: number, spins: number, dateString: string, refFid: string;
 import { addUser, getUser, updateDate, updateRef } from './types'
 //const HAS_KV = !!process.env.KV_URL;
-//const transport = http(process.env.RPC_URL);
+const transport = http(process.env.RPC_URL);
+
+const publicClient = createPublicClient({
+	chain: CHAIN,
+	transport,
+  });
 
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +34,26 @@ export async function POST(req: NextRequest): Promise<Response> {
 			console.error(status);
 			throw new Error('Invalid frame request');
 		}
+
+		// Check if user has an address connected
+		const address: Address | undefined =
+			status?.action?.interactor?.verifications?.[0];
+
+		if (!address) {
+			return getResponse(ResponseType.NO_ADDRESS);
+		}
+
+		// Check if user has a balance
+		const balance: any = await publicClient.readContract({
+			abi: abi,
+			address: CONTRACT_ADDRESS,
+			functionName: 'balanceOf',
+			args: [address],
+		  });
+	  
+		  if (balance > 0n) {
+			return getResponse(ResponseType.NEED_TOKEN);
+		  }
 
 		const fid_new = status?.action?.interactor?.fid ? JSON.stringify(status.action.interactor.fid) : null;
 		const username_new = status?.action?.interactor?.username ? JSON.stringify(status.action.interactor.username) : null;
@@ -66,13 +94,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 			return getResponse(ResponseType.RECAST);
 		}
 
-		// Check if user has an address connected
-		const address: Address | undefined =
-			status?.action?.interactor?.verifications?.[0];
-
-		if (!address) {
-			return getResponse(ResponseType.NO_ADDRESS);
-		}
+		
 
 		return getResponse(ResponseType.SUCCESS);
 	} catch (error) {
@@ -86,6 +108,7 @@ enum ResponseType {
 	RECAST,
 	NO_ADDRESS,
 	ERROR,
+	NEED_TOKEN
 }
 
 function getResponse(type: ResponseType) {
@@ -94,6 +117,7 @@ function getResponse(type: ResponseType) {
 		[ResponseType.RECAST]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/recast.png',
 		[ResponseType.NO_ADDRESS]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/no-address.png',
 		[ResponseType.ERROR]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/error.png',
+		[ResponseType.NEED_TOKEN]: 'https://gateway.lighthouse.storage/ipfs/QmaS8bbwz79CWfJEfJ44JEu4PA7QkR563koCqSdgPED6Jp/error.png',
 	}[type];
 	const shouldRetry =
 		type === ResponseType.ERROR || type === ResponseType.RECAST;
