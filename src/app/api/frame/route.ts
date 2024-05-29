@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 			args: [address],
 		  });
 
-		  if (balance < 24000000000000000000000n) {
+		  if (balance < 240000000000000000000n) {
 			return getResponse(ResponseType.NEED_TOKEN);
 		  } else {
 			console.warn(balance);
@@ -61,12 +61,13 @@ export async function POST(req: NextRequest): Promise<Response> {
 		const username_new = status?.action?.interactor?.username ? JSON.stringify(status.action.interactor.username) : null;
 		const display_name_new = status?.action?.interactor?.display_name ? JSON.stringify(status.action.interactor.display_name) : null;
 		const refFid_new = status?.action?.cast?.author?.fid ? JSON.stringify(status?.action?.cast?.author?.fid) : null;
+		const power_badge = status?.action?.interactor?.power_badge ? status.action.interactor.power_badge : null;
 
 		const User = await getUser(fid_new);
 
 		if (!User) {
 			//console.warn('not added: ' + JSON.stringify(User));
-			await addUser(fid_new, username_new, display_name_new, refFid_new);
+			await addUser(fid_new, username_new, display_name_new, refFid_new, power_badge);
 			await updateRef(refFid_new);
 			spins = 3;
 		} else {
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 		const lastSpin: string = new Date(dateString).toLocaleString().split(',')[0];
 
 		if (lastSpin !== today) {
-			await updateDate(fid_new);
+			await updateDate(fid_new, power_badge);
 			await updateRef(refFid);
 			spins = 3;
 		}
