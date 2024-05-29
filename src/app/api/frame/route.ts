@@ -53,6 +53,8 @@ export async function POST(req: NextRequest): Promise<Response> {
 	  
 		  if (balance > 10) {
 			return getResponse(ResponseType.NEED_TOKEN);
+		  } else {
+			console.warn(balance);
 		  }
 
 		const fid_new = status?.action?.interactor?.fid ? JSON.stringify(status.action.interactor.fid) : null;
@@ -86,13 +88,13 @@ export async function POST(req: NextRequest): Promise<Response> {
 		}
 
 		// // Check if user has liked and recasted
-		const hasLikedAndRecasted =
-			!!status?.action?.cast?.viewer_context?.liked &&
-			!!status?.action?.cast?.viewer_context?.recasted;
+		// const hasLikedAndRecasted =
+		// 	!!status?.action?.cast?.viewer_context?.liked &&
+		// 	!!status?.action?.cast?.viewer_context?.recasted;
 
-		if (!hasLikedAndRecasted) {
-			return getResponse(ResponseType.RECAST);
-		}
+		// if (!hasLikedAndRecasted) {
+		// 	return getResponse(ResponseType.RECAST);
+		// }
 
 		
 
