@@ -132,22 +132,28 @@ function getResponse(type: ResponseType) {
     <meta property="fc:frame:post_url" content="${SITE_URL}/api/frame" />
 
     ${shouldRetry
-			? `<meta property="fc:frame:button:1" content="Try again" />`
-			: `<meta name="fc:frame:button:1" content="🔄${spins} Free spins" />
-        <meta name="fc:frame:button:1:action" content="post" />
-        <meta name="fc:frame:button:1:target" content="${SITE_URL}/api/frame/spin/" />
-    
-        <meta name="fc:frame:button:2" content="📖Rules" />
-        <meta name="fc:frame:button:2:action" content="post" />
-        <meta name="fc:frame:button:2:target" content="${SITE_URL}/api/frame/rules/" />
-    
-        <meta name="fc:frame:button:3" content="Leaderboard" />
-        <meta name="fc:frame:button:3:action" content="post" />
-        <meta name="fc:frame:button:3:target" content="${SITE_URL}/api/frame/leaderboard/" />
-    
-        <meta name="fc:frame:button:4" content="Buy PILL" />
-        <meta name="fc:frame:button:4:action" content="link" />
-        <meta name="fc:frame:button:4:target" content="https://app.uniswap.org/swap?chain=base&inputCurrency=ETH&outputCurrency=0x388e543a5a491e7b42e3fbcd127dd6812ea02d0d" />`
+			? 
+				`<meta property="fc:frame:button:1" content="Try again" />
+				<meta name="fc:frame:button:2" content="Buy PILL" />
+        		<meta name="fc:frame:button:2:action" content="link" />
+        		<meta name="fc:frame:button:2:target" content="https://app.uniswap.org/swap?chain=base&inputCurrency=ETH&outputCurrency=0x388e543a5a491e7b42e3fbcd127dd6812ea02d0d" />
+				`
+			: 
+				`<meta name="fc:frame:button:1" content="🔄${spins} Free spins" />
+				<meta name="fc:frame:button:1:action" content="post" />
+				<meta name="fc:frame:button:1:target" content="${SITE_URL}/api/frame/spin/" />
+			
+				<meta name="fc:frame:button:2" content="📖Rules" />
+				<meta name="fc:frame:button:2:action" content="post" />
+				<meta name="fc:frame:button:2:target" content="${SITE_URL}/api/frame/rules/" />
+			
+				<meta name="fc:frame:button:3" content="Leaderboard" />
+				<meta name="fc:frame:button:3:action" content="post" />
+				<meta name="fc:frame:button:3:target" content="${SITE_URL}/api/frame/leaderboard/" />
+			
+				<meta name="fc:frame:button:4" content="Buy PILL" />
+				<meta name="fc:frame:button:4:action" content="link" />
+				<meta name="fc:frame:button:4:target" content="https://app.uniswap.org/swap?chain=base&inputCurrency=ETH&outputCurrency=0x388e543a5a491e7b42e3fbcd127dd6812ea02d0d" />`
 		}
 
   </head></html>`);
