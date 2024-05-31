@@ -64,9 +64,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 			  });
 		}		
 
-		  if (balance1 < 24000000000000000000000n || balance2 < 24000000000000000000000n) {
-			console.warn('need more token ' + balance1 + ' - ' + address1);
-			console.warn('need more token ' + balance2 + ' - ' + address2);
+		  if (balance1 < 3000000000000000000000n || balance2 < 3000000000000000000000n) {
+			console.warn('1need more token ' + balance1 + ' - ' + address1);
+			console.warn('2need more token ' + balance2 + ' - ' + address2);
 			return getResponse(ResponseType.NEED_TOKEN);
 		  } else {
 			console.warn(balance1);
