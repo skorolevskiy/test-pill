@@ -7,7 +7,6 @@ import {
 	Hex,
 	TransactionExecutionError,
 	createPublicClient,
-	createWalletClient,
 	http,
 } from 'viem';
 
@@ -36,25 +35,38 @@ export async function POST(req: NextRequest): Promise<Response> {
 		}
 
 		// Check if user has an address connected
-		const address: Address | undefined =
+		// Check if user has an address connected
+		const address1: Address | undefined =
 			status?.action?.interactor?.verifications?.[0];
+		const address2: Address | undefined =
+			status?.action?.interactor?.verifications?.[1];
 
-		if (!address) {
+		if (!address1) {
 			return getResponse(ResponseType.NO_ADDRESS);
 		}
 
 		// Check if user has a balance
-		const balance: any = await publicClient.readContract({
+		const balance1: any = await publicClient.readContract({
 			abi: abi,
 			address: CONTRACT_ADDRESS,
 			functionName: 'balanceOf',
-			args: [address],
+			args: [address1],
+		  });
+		
+		const balance2: any = await publicClient.readContract({
+			abi: abi,
+			address: CONTRACT_ADDRESS,
+			functionName: 'balanceOf',
+			args: [address2],
 		  });
 
-		  if (balance < 24000000000000000000000n) {
+		  if (balance1 < 24000000000000000000000n || balance2 < 24000000000000000000000n) {
+			console.warn('need more token ' + balance1 + ' - ' + address1);
+			console.warn('need more token ' + balance2 + ' - ' + address2);
 			return getResponse(ResponseType.NEED_TOKEN);
 		  } else {
-			console.warn(balance);
+			console.warn(balance1);
+			console.warn(balance2);
 		  }
 
 		const fid_new = status?.action?.interactor?.fid ? JSON.stringify(status.action.interactor.fid) : null;
