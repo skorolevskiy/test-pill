@@ -41,24 +41,28 @@ export async function POST(req: NextRequest): Promise<Response> {
 		const address2: Address | undefined =
 			status?.action?.interactor?.verifications?.[1];
 
+		let balance1: any, balance2: any;
+
 		if (!address1) {
 			return getResponse(ResponseType.NO_ADDRESS);
+		} else {
+			// Check if user has a balance
+			balance1 = await publicClient.readContract({
+				abi: abi,
+				address: CONTRACT_ADDRESS,
+				functionName: 'balanceOf',
+				args: [address1],
+			  });
 		}
-
-		// Check if user has a balance
-		const balance1: any = await publicClient.readContract({
-			abi: abi,
-			address: CONTRACT_ADDRESS,
-			functionName: 'balanceOf',
-			args: [address1],
-		  });
-		
-		const balance2: any = await publicClient.readContract({
-			abi: abi,
-			address: CONTRACT_ADDRESS,
-			functionName: 'balanceOf',
-			args: [address2],
-		  });
+		if (!address2) {}
+		else {
+			balance2 = await publicClient.readContract({
+				abi: abi,
+				address: CONTRACT_ADDRESS,
+				functionName: 'balanceOf',
+				args: [address2],
+			  });
+		}		
 
 		  if (balance1 < 24000000000000000000000n || balance2 < 24000000000000000000000n) {
 			console.warn('need more token ' + balance1 + ' - ' + address1);
