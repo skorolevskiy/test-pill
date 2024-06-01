@@ -8,6 +8,7 @@ import {
 	TransactionExecutionError,
 	createPublicClient,
 	http,
+	formatUnits
 } from 'viem';
 
 let fid: string, points: number, spins: number, dateString: string, refFid: string;
