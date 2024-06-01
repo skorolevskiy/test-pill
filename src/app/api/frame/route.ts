@@ -42,13 +42,13 @@ export async function POST(req: NextRequest): Promise<Response> {
 		const address2: Address | undefined =
 			status?.action?.interactor?.verifications?.[1];
 
-		let balance1: any, balance2: any;
+		let rawBalance1: any, rawBalance2: any;
 
 		if (!address1) {
 			return getResponse(ResponseType.NO_ADDRESS);
 		} else {
 			// Check if user has a balance
-			balance1 = await publicClient.readContract({
+			rawBalance1 = await publicClient.readContract({
 				abi: abi,
 				address: CONTRACT_ADDRESS,
 				functionName: 'balanceOf',
@@ -57,23 +57,25 @@ export async function POST(req: NextRequest): Promise<Response> {
 		}
 		if (!address2) {}
 		else {
-			balance2 = await publicClient.readContract({
+			rawBalance2 = await publicClient.readContract({
 				abi: abi,
 				address: CONTRACT_ADDRESS,
 				functionName: 'balanceOf',
 				args: [address2],
 			  });
 		}		
+		const balance1: bigint = BigInt(rawBalance1 as unknown as string);
+		const balance2: bigint = BigInt(rawBalance2 as unknown as string);
 
 		console.warn('1 wallet' + balance1 + ' - ' + address1);
 		console.warn('2 wallet' + balance2 + ' - ' + address2);
 
-		const balanceInTokens1 = parseFloat(formatUnits(balance1, 18));
-		const balanceInTokens2 = parseFloat(formatUnits(balance2, 18));
+		const balanceInTokens1: number = parseFloat(formatUnits(balance1, 18));
+		const balanceInTokens2: number = parseFloat(formatUnits(balance2, 18));
 
-		  if (balance1 < 2400000000000000000000 || balance2 < 2400000000000000000000) {
-			console.warn('1need more token ' + balance1 + ' - ' + address1);
-			console.warn('2need more token ' + balance2 + ' - ' + address2);
+		  if (balanceInTokens1 < 2400000000000000000000 || balanceInTokens2 < 2400000000000000000000) {
+			console.warn('1need more token ' + balanceInTokens1 + ' - ' + address1);
+			console.warn('2need more token ' + balanceInTokens2 + ' - ' + address2);
 			return getResponse(ResponseType.NEED_TOKEN);
 		  } else {
 			console.warn(balance1);
