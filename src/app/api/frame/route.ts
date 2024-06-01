@@ -68,11 +68,8 @@ export async function POST(req: NextRequest): Promise<Response> {
 			balance2 = BigInt(rawBalance2 as unknown as string)
 		}
 
-		console.warn('1 wallet' + balance1 + ' - ' + address1);
-		console.warn('2 wallet' + balance2 + ' - ' + address2);
-
-		const balanceInTokens1: number = parseFloat(formatUnits(balance1, 18));
-		const balanceInTokens2: number = parseFloat(formatUnits(balance2, 18));
+		const balanceInTokens1: number = parseInt(formatUnits(balance1, 18));
+		const balanceInTokens2: number = parseInt(formatUnits(balance2, 18));
 
 		  if (balanceInTokens1 < 2400 || balanceInTokens2 < 2400) {
 			console.warn('1need more token ' + balanceInTokens1 + ' - ' + address1);
