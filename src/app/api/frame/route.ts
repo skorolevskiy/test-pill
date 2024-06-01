@@ -8,6 +8,7 @@ import {
 	TransactionExecutionError,
 	createPublicClient,
 	http,
+	formatUnits
 } from 'viem';
 
 let fid: string, points: number, spins: number, dateString: string, refFid: string;
@@ -64,7 +65,13 @@ export async function POST(req: NextRequest): Promise<Response> {
 			  });
 		}		
 
-		  if (balance1 < 3000000000000000000000n || balance2 < 3000000000000000000000n) {
+		console.warn('1 wallet' + balance1 + ' - ' + address1);
+		console.warn('2 wallet' + balance2 + ' - ' + address2);
+
+		// const balanceInTokens1 = parseFloat(formatUnits(balance1, 18));
+		// const balanceInTokens2 = parseFloat(formatUnits(balance2, 18));
+
+		  if (balance1 < 24000000000000000000000 || balance2 < 24000000000000000000000) {
 			console.warn('1need more token ' + balance1 + ' - ' + address1);
 			console.warn('2need more token ' + balance2 + ' - ' + address2);
 			return getResponse(ResponseType.NEED_TOKEN);
