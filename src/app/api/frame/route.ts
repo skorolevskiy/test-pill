@@ -72,13 +72,14 @@ export async function POST(req: NextRequest): Promise<Response> {
 		const balanceInTokens2: number = parseInt(formatUnits(balance2, 18));
 		const threshold: number = 2400;
 
-		  if (balanceInTokens1 < threshold || balanceInTokens2 < threshold) {
+		  if (balanceInTokens1 > threshold || balanceInTokens2 > threshold) {
+			console.warn(balanceInTokens1);
+			console.warn(balanceInTokens2);
+		  } else {
 			console.warn('1need more token ' + balanceInTokens1 + ' - ' + address1);
 			console.warn('2need more token ' + balanceInTokens2 + ' - ' + address2);
 			return getResponse(ResponseType.NEED_TOKEN);
-		  } else {
-			console.warn(balanceInTokens1);
-			console.warn(balanceInTokens2);
+			
 		  }
 
 		const fid_new = status?.action?.interactor?.fid ? JSON.stringify(status.action.interactor.fid) : null;
