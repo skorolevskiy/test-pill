@@ -66,9 +66,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 				args: [address2],
 			  });
 			balance2 = BigInt(rawBalance2 as unknown as string)
-		}		
-		
-		BigInt(rawBalance2 as unknown as string)
+		}
 
 		console.warn('1 wallet' + balance1 + ' - ' + address1);
 		console.warn('2 wallet' + balance2 + ' - ' + address2);
