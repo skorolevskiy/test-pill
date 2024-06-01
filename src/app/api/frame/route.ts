@@ -43,7 +43,8 @@ export async function POST(req: NextRequest): Promise<Response> {
 			status?.action?.interactor?.verifications?.[1];
 
 		let rawBalance1: any, rawBalance2: any;
-
+		let balance1: bigint;
+		let balance2: bigint;
 		if (!address1) {
 			return getResponse(ResponseType.NO_ADDRESS);
 		} else {
@@ -54,8 +55,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 				functionName: 'balanceOf',
 				args: [address1],
 			  });
+			balance1 = BigInt(rawBalance1 as unknown as string);
 		}
-		if (!address2) {}
+		if (!address2) {balance2 = BigInt(0);}
 		else {
 			rawBalance2 = await publicClient.readContract({
 				abi: abi,
@@ -63,9 +65,10 @@ export async function POST(req: NextRequest): Promise<Response> {
 				functionName: 'balanceOf',
 				args: [address2],
 			  });
+			balance2 = BigInt(rawBalance2 as unknown as string)
 		}		
-		const balance1: bigint = BigInt(rawBalance1 as unknown as string);
-		const balance2: bigint = BigInt(rawBalance2 as unknown as string);
+		
+		BigInt(rawBalance2 as unknown as string)
 
 		console.warn('1 wallet' + balance1 + ' - ' + address1);
 		console.warn('2 wallet' + balance2 + ' - ' + address2);
