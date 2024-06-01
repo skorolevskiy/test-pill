@@ -71,7 +71,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 		// const balanceInTokens1 = parseFloat(formatUnits(balance1, 18));
 		// const balanceInTokens2 = parseFloat(formatUnits(balance2, 18));
 
-		  if (balance1 < 24000000000000000000000 || balance2 < 24000000000000000000000) {
+		  if (balance1 < 2400000000000000000000 || balance2 < 2400000000000000000000) {
 			console.warn('1need more token ' + balance1 + ' - ' + address1);
 			console.warn('2need more token ' + balance2 + ' - ' + address2);
 			return getResponse(ResponseType.NEED_TOKEN);
